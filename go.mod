@@ -1,4 +1,4 @@
-module github.com/jianbo-zh/go-error
+module github.com/jianbo-zh/go-errors
 
 go 1.16
 
