@@ -56,7 +56,7 @@ func New(msg string, options ...Option) error {
 	return err
 }
 
-func NewCode(code int, msg string, options ...Option) error {
+func NewC(code int, msg string, options ...Option) error {
 
 	err := &Error{
 		Cod: code,
