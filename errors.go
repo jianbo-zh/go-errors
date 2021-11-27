@@ -8,6 +8,7 @@ type Context = map[string]interface{}
 
 type Error struct {
 	Inner error
+	Cod   int
 	Msg   string
 	Ctx   Context
 }
@@ -34,13 +35,18 @@ func (err *Error) Unwrap() error {
 	return err.Inner
 }
 
+func (err *Error) Code() int {
+	return err.Cod
+}
+
 func (err *Error) Data() Context {
 	return err.Ctx
 }
 
-func New(msg string, options ...Option) error {
+func New(code int, msg string, options ...Option) error {
 
 	err := &Error{
+		Cod: code,
 		Msg: msg,
 	}
 
