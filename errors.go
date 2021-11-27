@@ -43,7 +43,20 @@ func (err *Error) Data() Context {
 	return err.Ctx
 }
 
-func New(code int, msg string, options ...Option) error {
+func New(msg string, options ...Option) error {
+
+	err := &Error{
+		Msg: msg,
+	}
+
+	for _, option := range options {
+		option(err)
+	}
+
+	return err
+}
+
+func NewCode(code int, msg string, options ...Option) error {
 
 	err := &Error{
 		Cod: code,
