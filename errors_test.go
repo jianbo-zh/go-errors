@@ -10,7 +10,7 @@ func TestNew(t *testing.T) {
 	err1 := New("world")
 	err := New("hello", WithError(err1))
 
-	fmt.Printf("%+v", err)
+	fmt.Printf("%+v\n", err)
 	fmt.Printf("err is err1 %t", errors.Is(err, err1))
 }
 

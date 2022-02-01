@@ -2,6 +2,7 @@ package errors
 
 import (
 	"bytes"
+	"errors"
 )
 
 type Context = map[string]interface{}
@@ -76,4 +77,12 @@ func Data(err error) Context {
 		return nil
 	}
 	return u.Data()
+}
+
+func Is(err, target error) bool {
+	return errors.Is(err, target)
+}
+
+func As(err error, target interface{}) bool {
+	return errors.As(err, target)
 }
