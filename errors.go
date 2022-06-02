@@ -3,26 +3,29 @@ package errors
 import (
 	"bytes"
 	"errors"
+	"fmt"
 )
 
-type Context = map[string]interface{}
+type MapData = map[string]interface{}
 
 type Error struct {
-	Inner error
-	Cod   int
-	Msg   string
-	Ctx   Context
+	Inner    error
+	Code     int
+	Messge   string
+	Layer    string
+	Category string
+	Playload MapData
 }
 
 func (err *Error) Error() string {
 	if err.Inner == nil {
-		return err.Msg
+		return err.Messge
 	}
 
 	buff := bufferPool.Get().(*bytes.Buffer)
 	buff.Reset()
 
-	buff.WriteString(err.Msg)
+	buff.WriteString(err.Messge)
 	buff.Write(innerSeparator)
 	buff.WriteString(err.Inner.Error())
 
@@ -36,47 +39,41 @@ func (err *Error) Unwrap() error {
 	return err.Inner
 }
 
-func (err *Error) Code() int {
-	return err.Cod
-}
-
-func (err *Error) Data() Context {
-	return err.Ctx
-}
-
-func New(msg string, options ...Option) error {
-
-	err := &Error{
-		Msg: msg,
-	}
-
+func (err *Error) With(options ...Option) *Error {
 	for _, option := range options {
 		option(err)
 	}
-
 	return err
 }
 
-func NewC(code int, msg string, options ...Option) error {
-
+func New(msg string) *Error {
 	err := &Error{
-		Cod: code,
-		Msg: msg,
+		Messge: msg,
 	}
-
-	for _, option := range options {
-		option(err)
-	}
-
 	return err
 }
 
-func Data(err error) Context {
-	u, ok := err.(interface{ Data() Context })
-	if !ok {
-		return nil
+func Newf(format string, a ...interface{}) *Error {
+	err := &Error{
+		Messge: fmt.Sprintf(format, a...),
 	}
-	return u.Data()
+	return err
+}
+
+func Newc(code int, msg string) *Error {
+	err := &Error{
+		Code:   code,
+		Messge: msg,
+	}
+	return err
+}
+
+func Newcf(code int, format string, a ...interface{}) *Error {
+	err := &Error{
+		Code:   code,
+		Messge: fmt.Sprintf(format, a...),
+	}
+	return err
 }
 
 func Is(err, target error) bool {

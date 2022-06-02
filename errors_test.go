@@ -8,14 +8,14 @@ import (
 
 func TestNew(t *testing.T) {
 	err1 := New("world")
-	err := New("hello", WithError(err1))
+	err := New("hello")
 
 	fmt.Printf("%+v\n", err)
 	fmt.Printf("err is err1 %t", errors.Is(err, err1))
 }
 
 func TestCombine(t *testing.T) {
-	err1 := New("hello", WithError(errors.New("key world")))
+	err1 := New("hello")
 	err2 := New("world")
 	err3 := New("hahaha")
 
@@ -27,7 +27,7 @@ func TestCombine(t *testing.T) {
 }
 
 func TestAppend(t *testing.T) {
-	err1 := New("hello", WithError(errors.New("key world")))
+	err1 := New("hello")
 	err2 := New("world")
 
 	fmt.Printf("%+v", Append(err1, err2))
