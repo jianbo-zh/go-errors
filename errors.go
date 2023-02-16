@@ -11,7 +11,7 @@ type MapData = map[string]interface{}
 type Error struct {
 	Inner    error
 	Code     int
-	Messge   string
+	Message  string
 	Layer    string
 	Category string
 	Payload  MapData
@@ -19,13 +19,13 @@ type Error struct {
 
 func (err *Error) Error() string {
 	if err.Inner == nil {
-		return err.Messge
+		return err.Message
 	}
 
 	buff := bufferPool.Get().(*bytes.Buffer)
 	buff.Reset()
 
-	buff.WriteString(err.Messge)
+	buff.WriteString(err.Message)
 	buff.Write(innerSeparator)
 	buff.WriteString(err.Inner.Error())
 
@@ -48,30 +48,30 @@ func (err *Error) With(options ...Option) *Error {
 
 func New(msg string) *Error {
 	err := &Error{
-		Messge: msg,
+		Message: msg,
 	}
 	return err
 }
 
 func Newf(format string, a ...interface{}) *Error {
 	err := &Error{
-		Messge: fmt.Sprintf(format, a...),
+		Message: fmt.Sprintf(format, a...),
 	}
 	return err
 }
 
 func Newc(code int, msg string) *Error {
 	err := &Error{
-		Code:   code,
-		Messge: msg,
+		Code:    code,
+		Message: msg,
 	}
 	return err
 }
 
 func Newcf(code int, format string, a ...interface{}) *Error {
 	err := &Error{
-		Code:   code,
-		Messge: fmt.Sprintf(format, a...),
+		Code:    code,
+		Message: fmt.Sprintf(format, a...),
 	}
 	return err
 }
