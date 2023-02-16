@@ -14,7 +14,7 @@ type Error struct {
 	Messge   string
 	Layer    string
 	Category string
-	Playload MapData
+	Payload  MapData
 }
 
 func (err *Error) Error() string {

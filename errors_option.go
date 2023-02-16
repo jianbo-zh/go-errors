@@ -2,9 +2,9 @@ package errors
 
 type Option func(err *Error)
 
-func Playload(playload MapData) Option {
+func Payload(payload MapData) Option {
 	return func(err *Error) {
-		err.Playload = playload
+		err.Payload = payload
 	}
 }
 
